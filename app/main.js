@@ -27,7 +27,38 @@ var MainHandler = React.createClass({
     var route = this.getRoutes().reverse()[0];
     var key = JSON.stringify(route)+JSON.stringify(this.getParams());
     //console.log(key);
-    return <div><TransitionGroup transitionName="example"><RouteHandler key={key} /></TransitionGroup></div>
+    return <div>
+      <header className="header">
+        <div className="icon">
+          <Link to="index"><img src="assets/fb-250.jpg" /></Link>
+        </div>
+        <h1><Link to="index">Desmond Lee</Link></h1>
+        <p className="intro">This is my personal blog. I'm an undergraduate student at The University of Texas at Dallas studying Software Engineering.</p>
+        <div className="follow-icons">
+          <a className="follow-icon" href="http://facebook.com/desmondl"><i className="fa fa-facebook-square fa-2x"></i></a>
+          <a className="follow-icon" href="http://linkedin.com/in/deslee"><i className="fa fa-linkedin-square fa-2x"></i></a>
+          <a className="follow-icon" href="http://github.com/deslee"><i className="fa fa-github-square fa-2x"></i></a>
+          <a className="follow-icon" href="mailto:desmond.lee.public@gmail.com"><i className="fa fa-envelope-square fa-2x"></i></a>
+        </div>
+        <nav className="menu">
+          <h6 className="menu-item"><Link to="index">Home</Link></h6>
+          <h6 className="menu-item"><Link to="post" params={{slug: 'about'}}>About</Link></h6>
+          <h6 className="menu-item"><Link to="post" params={{slug: 'projects'}}>Projects</Link></h6>
+        </nav>
+      </header>
+
+      <main className="main">
+        <TransitionGroup transitionName="example"><RouteHandler key={key} /></TransitionGroup>
+      </main>
+
+      <footer className="footer">
+        <span>© 2014 Desmond Lee</span>
+        <span className="separator"></span>
+        <a href="https://github.com/deslee/deslee-react-flux/">Hand crafted.</a>
+        <span className="separator"></span>
+        <a href="https://github.com/kathyqian/crisp-ghost-theme">Theme.</a>
+      </footer>
+    </div>
   }
 });
 
@@ -61,5 +92,5 @@ var routes = <Route handler={MainHandler} location="history">
 </Route>;
 
 Router.run(routes, Router.HistoryLocation, function(Handler) {
-  React.render(<Handler/>, document.getElementsByTagName('main')[0]);
+  React.render(<Handler/>, document.body);
 });
