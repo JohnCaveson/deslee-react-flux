@@ -25,7 +25,9 @@ var PostRoute = React.createClass({
   render: function() {
     var slug = this.getParams().slug;
     var post = _.find(app_initial_data, {meta:{slug: slug}});
-    return <Post post={post}/>
+    if (post)
+      return <Post post={post}/>
+    else return <h2>Not found</h2>
   }
 });
 

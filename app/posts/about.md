@@ -5,23 +5,31 @@ Page: true
 
 Download my resume [here](https://s3.amazonaws.com/deslee/resume.pdf).
 
-## Past work
+## About me
 
-I interned at [Captured Dimensions][1], a company specializing in 3D printing and scanning, on an internal [Django][2] web suite as well as a [Qt][3]/[PySide][4] thick client interface.
+### Work experience
+
+#### Tekzenit - Software Engineer
+
+- Employed front end technologies such as AngularJS to develop web applications for browsers on multiple devices, 
+Entity Framework, SQL Server, and Unity Container as well as many front-end libraries such as Twitter Bootstrap, jQuery, and SignalR, linq.js, and TinyMCE.
+- Research and development of front end architecture to be served by a .NET backend that utilizes ASP .NET Web API 2, NHibernate and Microsoft SQL Server to provide a data driven application.
+- Re-factored existing architecture for greater modularity, higher cohesiveness, less coupling, and easier maintainability.
+- Deployed a QA server running ASP.NET MVC/WebApi2, MS SQL Server 2012, using IIS Express for developers.
+
+#### Captured Dimensions - Winter Internship
+
+I interned at [Captured Dimensions][1] during the winter of 2013, a company specializing in 3D printing and scanning, on an internal [Django][2] web suite as well as a [Qt][3]/[PySide][4] thick client interface.
+
+- Utilized frameworks such as Django, (Py) Qt, and gPhoto2 for Captured Dimension's many software development projects.
+- Learned how to use [Redis][5] and [Celery][6] to improve Captured Dimension's asset pipeline.
 
 [1]: http://captureddimensions.com/
 [2]: https://www.djangoproject.com/
 [3]: http://qt-project.org/
 [4]: http://qt-project.org/wiki/PySide
-
-## Work experience
-### Tekzenit - Summer Internship
-
-- Demonstrated skills in learning new middle-tier technologies such as ASP.NET MVC 4, 
-Entity Framework, SQL Server, and Unity Container as well as many front-end libraries such as Twitter Bootstrap, jQuery, and SignalR, linq.js, and TinyMCE.
-- Developed a robust, reusable, and real-time auto updating datagrid to landle large amounts of data with an easy to use user interface with the help of SignalR.
-- Helped implement an email templating system that reduced web server load by offloading email generation and sending responsibilities to a service that could be 
-implemented on a remote server.
+[5]: http://redis.io/
+[6]: http://www.celeryproject.org/
 
 ### Friends
 
@@ -31,7 +39,7 @@ implemented on a remote server.
 
 ### Favorites
 
-Here are some of my favorite people/things on the web:
+Here are some of my favorite people and things on the web:
 
 - People
 	- [Zen Habits](http://zenhabits.net/)

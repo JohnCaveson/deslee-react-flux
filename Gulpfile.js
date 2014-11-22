@@ -147,6 +147,10 @@ gulp.task('serve', function() {
     }));
 });
 
+gulp.task('refresh-md', function(cb) {
+  runSequence('build:blog', 'move:html', cb);
+})
+
 gulp.task('watch', function() {
   var watch = function(path, task) {
     gulp.watch(path, function(events) {
@@ -161,7 +165,7 @@ gulp.task('watch', function() {
   livereload.listen();
 
   watch('./app/index.html', 'move:html');
-  watch('./app/posts/**/*.md', 'build:blog');
+  watch('./app/posts/**/*.md', 'refresh-md');
   watch(['./app/**/*.js', '!./app/posts**/*.js'], 'build:app');
   watch('./app/app.scss', 'move:css');
   watch('./app/assets/**/*', 'move:assets');
