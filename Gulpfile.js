@@ -11,6 +11,7 @@ var glob = require('glob');
 var fs = require('fs');
 var marked = require('meta-marked');
 var clean = require('gulp-clean');
+var uglify = require('gulp-uglify');
 
 var build_options = {
 	'isDev': true,
@@ -20,52 +21,29 @@ var build_options = {
 var posts = glob('./posts/**/*.js', {cwd: './app', sync: true});
 
 var vendor = [
-  'react-router'
-];
-var uglify = [
-  'jquery', 'moment', 'lodash','flux','react/addons'
+  'react-router', 'jquery', 'moment', 'lodash','flux','react/addons'
 ];
 
 /**
  * Browserify the external vendors and move them to ./build
  **/
 gulp.task('build:vendor', function() {
-  return gulp.src('./app/noop.js', {read: false})
+  var stream = gulp.src('./app/noop.js', {read: false})
     .pipe(browserify({
-      debug: process.env.NODE_ENV != 'production',
-      transform: []
+      debug: process.env.NODE_ENV != 'production'
     }))
     .on('prebundle', function(bundle) {
-      uglify.forEach(function(lib) {
-        bundle.external(lib);
-      });
       vendor.forEach(function(lib) {
         bundle.require(lib);
       });
     })
-    .pipe(rename('vendor.js'))
-    .pipe(gulp.dest('./build'));
-});
+    .pipe(rename('vendor.js'));
 
-/**
- * Browserify the external vendors and move them to ./build
- **/
-gulp.task('build:uglify', function() {
-  return gulp.src('./app/noop.js', {read: false})
-    .pipe(browserify({
-      debug: process.env.NODE_ENV != 'production',
-      transform: build_options.isDev ? [] : ['uglifyify']
-    }))
-    .on('prebundle', function(bundle) {
-      vendor.forEach(function(lib) {
-        bundle.external(lib);
-      });
-      uglify.forEach(function(lib) {
-        bundle.require(lib);
-      });
-    })
-    .pipe(rename('uglify.js'))
-    .pipe(gulp.dest('./build'));
+  if (!build_options.isDev) {
+    stream = stream.pipe(uglify());
+  }
+
+  stream.pipe(gulp.dest('./build'));
 });
 
 /**
@@ -78,19 +56,24 @@ gulp.task('build:posts', function() {
  * Browserify the main file and move it to ./build
  **/
 gulp.task('build:app', function() {
-  return gulp.src('./app/main.js', {read: false})
+  var stream = gulp.src('./app/main.js', {read: false})
 		.pipe(browserify({
 			transform: build_options.isDev ? ['reactify'] : ['reactify', 'uglifyify'],
 			debug: process.env.NODE_ENV != 'production'
 		}))
 		.on('prebundle', function(bundle) {
-			vendor.concat(uglify).forEach(function(lib) {
+			vendor.forEach(function(lib) {
 				bundle.external(lib);
 			});
 		})
 		.on('error', function(err) {console.error(err)})
-		.pipe(rename('app.js'))
-		.pipe(gulp.dest('./build'));
+		.pipe(rename('app.js'));
+
+  if (!build_options.isDev) {
+    stream = stream.pipe(uglify());
+  }
+
+  return stream.pipe(gulp.dest('./build'));
 });
 
 /**
@@ -130,7 +113,7 @@ gulp.task('move:assets', function() {
 });
 
 gulp.task('build', function(cb) {
-  runSequence(['build:vendor', 'build:uglify', 'build:posts', 'build:app', 'build:blog'], cb)
+  runSequence(['build:vendor', 'build:posts', 'build:app', 'build:blog'], cb)
 });
 
 gulp.task('clean', function() {
