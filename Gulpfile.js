@@ -143,7 +143,8 @@ gulp.task('build:blog', function() {
 gulp.task('serve', function() {
   return gulp.src('./build')
     .pipe(webserver({
-      port: process.env.PORT || 8000
+      port: process.env.PORT || 8000,
+      fallback: 'index.html'
     }));
 });
 
