@@ -123,6 +123,7 @@ html[data-theme="crisp"] {
         color: $steel;
         margin: 1rem 0;
         code {
+          word-wrap: break-word;
           background: none;
           border: none;
           color: inherit;
@@ -173,3 +174,7 @@ html[data-theme="crisp"] {
 .example-leave.example-leave-active {
   opacity: 0.01;
 }
+
+/* cehck out my profile */
+/* http://codepen.io/waddington/ */
+@import 'style/_loading';
