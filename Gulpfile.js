@@ -18,8 +18,11 @@ var build_options = {
 
 var posts = glob('./posts/**/*.js', {cwd: './app', sync: true});
 
-var external_libraries = [
-  'jquery', 'flux', 'react', 'react-router', 'moment', 'lodash', 'react/addons'
+var vendor = [
+  'react-router'
+];
+var uglify = [
+  'jquery', 'moment', 'lodash','flux','react/addons'
 ];
 
 /**
@@ -28,14 +31,39 @@ var external_libraries = [
 gulp.task('build:vendor', function() {
   return gulp.src('./app/noop.js', {read: false})
     .pipe(browserify({
-      debug: process.env.NODE_ENV != 'production'
+      debug: process.env.NODE_ENV != 'production',
+      transform: []
     }))
     .on('prebundle', function(bundle) {
-      external_libraries.forEach(function(lib) {
+      uglify.forEach(function(lib) {
+        bundle.external(lib);
+      });
+      vendor.forEach(function(lib) {
         bundle.require(lib);
       });
     })
     .pipe(rename('vendor.js'))
+    .pipe(gulp.dest('./build'));
+});
+
+/**
+ * Browserify the external vendors and move them to ./build
+ **/
+gulp.task('build:uglify', function() {
+  return gulp.src('./app/noop.js', {read: false})
+    .pipe(browserify({
+      debug: process.env.NODE_ENV != 'production',
+      transform: build_options.isDev ? [] : ['uglifyify']
+    }))
+    .on('prebundle', function(bundle) {
+      vendor.forEach(function(lib) {
+        bundle.external(lib);
+      });
+      uglify.forEach(function(lib) {
+        bundle.require(lib);
+      });
+    })
+    .pipe(rename('uglify.js'))
     .pipe(gulp.dest('./build'));
 });
 
@@ -51,11 +79,11 @@ gulp.task('build:posts', function() {
 gulp.task('build:app', function() {
   return gulp.src('./app/main.js', {read: false})
 		.pipe(browserify({
-			transform: ['reactify'],
+			transform: ['reactify', 'uglifyify'],
 			debug: process.env.NODE_ENV != 'production'
 		}))
 		.on('prebundle', function(bundle) {
-			external_libraries.forEach(function(lib) {
+			vendor.concat(uglify).forEach(function(lib) {
 				bundle.external(lib);
 			});
 		})
@@ -101,7 +129,7 @@ gulp.task('move:assets', function() {
 });
 
 gulp.task('build', function(cb) {
-  runSequence(['build:vendor', 'build:posts', 'build:app', 'build:blog'], cb)
+  runSequence(['build:vendor', 'build:uglify', 'build:posts', 'build:app', 'build:blog'], cb)
 });
 
 gulp.task('clean', function() {

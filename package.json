@@ -18,7 +18,8 @@
     "gulp-sass": "^1.1.0",
     "gulp-webserver": "^0.8.1",
     "process": "^0.8.0",
-    "run-sequence": "^1.0.2"
+    "run-sequence": "^1.0.2",
+    "uglifyify": "^2.6.0"
   },
   "dependencies": {
     "flux": "^2.0.1",
