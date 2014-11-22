@@ -8,6 +8,8 @@ var webserver = require('gulp-webserver');
 var sass = require('gulp-sass');
 var runSequence = require('run-sequence');
 var glob = require('glob');
+var fs = require('fs');
+var marked = require('meta-marked');
 
 var build_options = {
 	'isDev': true
@@ -16,7 +18,7 @@ var build_options = {
 var posts = glob('./posts/**/*.js', {cwd: './app', sync: true});
 
 var external_libraries = [
-	'jquery', 'flux', 'react', 'meta-marked'
+	'jquery', 'flux', 'react', 'moment'
 ];
 
 /**
@@ -40,19 +42,6 @@ gulp.task('build:vendor', function() {
  * Browserify the posts and move it to ./build
  **/
 gulp.task('build:posts', function() {
-  return gulp.src('./app/noop.js', {read: false})
-    .pipe(browserify({
-      transform: ['reactify'],
-      debug: process.env.NODE_ENV != 'production'
-    }))
-    .on('prebundle', function(bundle) {
-      posts.forEach(function(asset) {
-        bundle.require(asset);
-      });
-    })
-    .on('error', function(err) {console.error(err)})
-    .pipe(rename('posts.js'))
-    .pipe(gulp.dest('./build'));
 });
 
 /**
@@ -97,10 +86,10 @@ gulp.task('move:html', function() {
 /**
  * Move the posts to ./build
  **/
-gulp.task('move:posts', function() {
-  return gulp.src('./app/posts/**/*')
-    .pipe(gulp.dest('./build/posts'));
-});
+//gulp.task('move:posts', function() {
+//  return gulp.src('./app/posts/**/*')
+//    .pipe(gulp.dest('./build/posts'));
+//});
 
 /**
  * Move the static assets to ./build
@@ -111,15 +100,27 @@ gulp.task('move:assets', function() {
 });
 
 gulp.task('build', function(cb) {
-  runSequence(['build:vendor', 'build:posts', 'build:app'], cb)
+  runSequence(['build:vendor', 'build:posts', 'build:app', 'build:blog'], cb)
 });
 
 gulp.task('move', function(cb) {
-  runSequence(['move:html', 'move:css', 'move:posts', 'move:assets'], cb);
+  runSequence(['move:html', 'move:css', /*'move:posts',*/ 'move:assets'], cb);
 });
 
 gulp.task('main', function(cb) {
   runSequence('build', 'move', cb);
+});
+
+gulp.task('build:blog', function() {
+  var files = fs.readdirSync('./app/posts');
+  var list = files.map(function(e) {
+    var content = fs.readFileSync('./app/posts/' + e, {encoding: 'utf8'});
+    var markdown = marked(content);
+
+    markdown.meta.slug = e.split('.md')[0];
+    return markdown;
+  });
+  build_options.json = JSON.stringify(list);
 });
 
 gulp.task('serve', function() {
@@ -143,8 +144,7 @@ gulp.task('watch', function() {
   livereload.listen();
 
   watch('./app/index.html', 'move:html');
-  watch('./app/posts**/*.js', 'build:posts');
-  watch('./app/posts/**/*.md', 'move:posts');
+  watch('./app/posts/**/*.md', 'build:blog');
   watch(['./app/**/*.js', '!./app/posts**/*.js'], 'build:app');
   watch('./app/app.scss', 'move:css');
   watch('./app/assets/**/*', 'move:assets');

@@ -1,27 +1,155 @@
-body {
-	background-color: #81CFE0;
-	color: white;
-	font-family: sans-serif;
+@import "./foundation/_settings";
+@import "./foundation/functions";
+@import "../bower_components/foundation/scss/foundation";
+
+
+$fa-font-path: "assets/fonts/";
+@import "../bower_components/components-font-awesome/scss/font-awesome";
+
+$sidebar-size: 18rem;
+//$sidebar-size-large: 21rem;
+
+@mixin separator {
+  &:before {
+    color: #ccc;
+    content: ' · ';
+  }
+  &:first-child:before {
+    content: none;
+  }
 }
 
-h1, h2, h3, h4, h5, h6 {
-	font-family: serif;
-	font-weight: 100;
+.separator {
+  @include separator;
 }
 
-dt {
-	list-style-type: square;
-	list-style-position: inside;
-	display: list-item;
-	margin-top: 1em;
-}
+@import "style/_header";
 
-dd {
-	list-style-type: circle;
-	list-style-position: inside;
-	display: list-item;
-}
+html[data-theme="crisp"] {
+  @media #{$small-up} {
+    font-size: 100%;
+  }
+  @media #{$medium-only} {
+    .post h1 {
+      font-size: 2rem;
+    }
+  }
+  @media #{$medium-up} {
+    font-size: 115%;
+  }
 
-dd:last-child {
-	margin-bottom: 1em;
+  .main {
+    @media #{$small-up} {
+      padding: 1rem 1rem 1rem;
+      .posts h2 {
+        font-size: 1.15rem;
+        display: block;
+      }
+    }
+    @media #{$medium-up} {
+      padding: 2rem 2rem 2rem;
+      .posts h2 {
+        font-size: 1.25rem;
+        display: inline-block;
+      }
+      .posts .post time {
+        @include separator;
+      }
+
+      .post {
+        ul, ol {
+          margin-left: 3rem;
+        }
+      }
+    }
+    @media #{$large-up} {
+      margin-left: $sidebar-size;
+      .posts h2 {
+        font-size: 1.25em;
+        display: inline-block;
+      }
+    }
+
+
+    .tags {
+      @include separator;
+      a {
+        background-color: $smoke;
+        color: $aluminum;
+        padding: 0.3rem 0.6rem 0.3rem 0.6rem;
+        font-size: 0.5rem;
+        vertical-align: .2rem;
+        font-weight: $font-weight-bold;
+        border-radius: 0.25rem;
+        margin: 0 2px;
+      }
+    }
+
+
+    /* on a list page */
+    .posts .post { /* inside a post*/
+      border-bottom: 1px solid $smoke;
+      padding-bottom: .9rem;
+      margin-bottom: .9rem;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    /* on a single page */
+    article.post {
+      blockquote {
+        padding-top: 0;
+        border-left-width: 2px;
+        border-color: $smoke;
+        color: $aluminum;
+        * {
+          color: $aluminum;
+        }
+      }
+
+      h1 {
+      }
+
+      h2 {
+        margin: 2rem 0 1rem;
+        font-size: 2rem;
+      }
+
+      pre {
+        background-color: $smoke;
+        padding: 1em;
+        color: $steel;
+        code {
+          background: none;
+          border: none;
+          color: inherit;
+        }
+      }
+    }
+  }
+
+  .footer {
+    color: $aluminum;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding-right: 1rem;
+    height: 2rem;
+    line-height: 2rem;
+    width: 100%;
+    background: rgba(white, .75);
+    text-align: right;
+    text-transform: lowercase;
+    @media #{$small-up} {
+      font-size: .66rem;
+    }
+    @media #{$medium-up} {
+      font-size: .75rem;
+    }
+    a {
+      color: inherit;
+    }
+  }
 }
