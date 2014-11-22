@@ -21,11 +21,11 @@
     "meta-marked": "^0.3.3",
     "run-sequence": "^1.0.2",
     "reactify": "^0.17.1",
+    "gulp-clean": "^0.3.1",
     "uglifyify": "^2.6.0"
   },
   "dependencies": {
     "flux": "^2.0.1",
-    "gulp-clean": "^0.3.1",
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
     "meta-marked": "^0.3.3",

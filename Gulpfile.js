@@ -13,7 +13,8 @@ var marked = require('meta-marked');
 var clean = require('gulp-clean');
 
 var build_options = {
-	'isDev': true
+	'isDev': true,
+  'scheme': process.env.SCHEME ? process.env.SCHEME : 'http'
 };
 
 var posts = glob('./posts/**/*.js', {cwd: './app', sync: true});
@@ -79,7 +80,7 @@ gulp.task('build:posts', function() {
 gulp.task('build:app', function() {
   return gulp.src('./app/main.js', {read: false})
 		.pipe(browserify({
-			transform: ['reactify', 'uglifyify'],
+			transform: build_options.isDev ? ['reactify'] : ['reactify', 'uglifyify'],
 			debug: process.env.NODE_ENV != 'production'
 		}))
 		.on('prebundle', function(bundle) {
