@@ -1,6 +1,11 @@
 ---
 Title:   Learning how to use ReactJS and Firebase
 Date: 2014-11-6
+Tags:
+  - react
+  - firebase
+  - dev
+Draft: true
 ---
 
 ### Introduction
@@ -19,7 +24,7 @@ I had a CMS running on my server at the time, so I modified it to use Firebase a
 
 ### What I've learned
 
-bla h blahb lah
+todo: finish article
 
 
 [1]: http://facebook.github.io/react/

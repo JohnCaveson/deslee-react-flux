@@ -1,6 +1,8 @@
 ---
 Title:   Migrated to Jekyll
 Date:     2014-1-14
+Tags:
+  - outdated
 ---
 
 I migrated my blog to [Jekyll][1] yesterday. It was pretty easy since I didn't have that many posts.

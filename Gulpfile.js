@@ -18,7 +18,7 @@ var build_options = {
 var posts = glob('./posts/**/*.js', {cwd: './app', sync: true});
 
 var external_libraries = [
-	'jquery', 'flux', 'react', 'moment'
+	'jquery', 'flux', 'react', 'react-router', 'moment', 'lodash'
 ];
 
 /**
