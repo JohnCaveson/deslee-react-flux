@@ -10,6 +10,7 @@ var runSequence = require('run-sequence');
 var glob = require('glob');
 var fs = require('fs');
 var marked = require('meta-marked');
+var clean = require('gulp-clean');
 
 var build_options = {
 	'isDev': true
@@ -18,7 +19,7 @@ var build_options = {
 var posts = glob('./posts/**/*.js', {cwd: './app', sync: true});
 
 var external_libraries = [
-	'jquery', 'flux', 'react', 'react-router', 'moment', 'lodash'
+  'jquery', 'flux', 'react', 'react-router', 'moment', 'lodash', 'react/addons'
 ];
 
 /**
@@ -26,16 +27,16 @@ var external_libraries = [
  **/
 gulp.task('build:vendor', function() {
   return gulp.src('./app/noop.js', {read: false})
-		.pipe(browserify({
-			debug: process.env.NODE_ENV != 'production'
-		}))
-		.on('prebundle', function(bundle) {
-			external_libraries.forEach(function(lib) {
-				bundle.require(lib);
-			});
-		})
-		.pipe(rename('vendor.js'))
-		.pipe(gulp.dest('./build'));
+    .pipe(browserify({
+      debug: process.env.NODE_ENV != 'production'
+    }))
+    .on('prebundle', function(bundle) {
+      external_libraries.forEach(function(lib) {
+        bundle.require(lib);
+      });
+    })
+    .pipe(rename('vendor.js'))
+    .pipe(gulp.dest('./build'));
 });
 
 /**
@@ -103,6 +104,10 @@ gulp.task('build', function(cb) {
   runSequence(['build:vendor', 'build:posts', 'build:app', 'build:blog'], cb)
 });
 
+gulp.task('clean', function() {
+  return gulp.src('./build', {read: false}).pipe(clean({force: true}))
+});
+
 gulp.task('move', function(cb) {
   runSequence(['move:html', 'move:css', /*'move:posts',*/ 'move:assets'], cb);
 });
@@ -150,6 +155,11 @@ gulp.task('watch', function() {
   watch('./app/assets/**/*', 'move:assets');
 });
 
+gulp.task('production', function(cb) {
+  build_options.isDev = false;
+  runSequence('clean', 'main', cb);
+});
+
 gulp.task('default', function(cb) {
 	build_options.isDev = process.env.NODE_ENV != 'production';
 	console.log("running in " + (build_options.isDev ? 'development mode' : 'production mode'));
@@ -159,7 +169,7 @@ gulp.task('default', function(cb) {
   }
   else {
     build_options.isDev = false;
-    runSequence('main', cb);
+    runSequence('clean', 'main', cb);
   }
 });
 

@@ -1,50 +1,21 @@
 var React = require('react/addons');
+var moment = require('moment');
 
-var marked = require('meta-marked');
-var $ = require('jquery');
+var Tags = require('./tags');
 
-/**
- * Renders a loading component
- */
-var MarkdownPostLoading = React.createClass({
+// Render an individual post
+var Post = React.createClass({
   render: function() {
-    return <div>Loading</div>
+    var m = moment(this.props.post.meta.Date);
+    var time = this.props.post.meta.Date ? <time dateTime={m.format("YYYY-MM-DD")}>{m.format("MMMM Do YYYY")}</time> : undefined;
+
+    return <article className="post">
+        {time}
+      <Tags post={this.props.post} />
+      <h1>{this.props.post.meta.Title}</h1>
+      <div dangerouslySetInnerHTML={{__html: this.props.post.html}} />
+    </article>
   }
 });
 
-/**
- * Renders a Markdown post
- */
-var MarkdownPost = React.createClass({
-  getInitialState: function() {
-    return {
-    }
-  },
-  componentDidMount: function() {
-    $.get(this.props.src+'.md', function(result) {
-      var post = marked(result);
-      this.setState({
-        title: post.meta.Title,
-        html: post.html
-      });
-
-    }.bind(this));
-  },
-  componentDidUpdate: function() {
-  },
-  render: function() {
-
-    /*
-     If state.html hasn't come in yet, then render a MarkdownPostLoading instead.
-     */
-    var markdownBlock =
-      this.state.html ?
-        <div>
-          <h1>{this.state.title}</h1>
-          <div className="insertMarkdown" dangerouslySetInnerHTML={{__html: this.state.html}}></div>
-        </div> :
-        <MarkdownPostLoading />;
-
-    return markdownBlock
-  }
-});
+module.exports = Post;
