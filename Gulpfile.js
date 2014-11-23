@@ -18,10 +18,10 @@ var build_options = {
   'scheme': process.env.SCHEME ? process.env.SCHEME : 'http'
 };
 
-var posts = glob('./posts/**/*.js', {cwd: './app', sync: true});
+var posts = glob('./assets/posts/**/*.js', {cwd: './app', sync: true});
 
 var vendor = [
-  'react-router', 'jquery', 'moment', 'lodash','flux','react/addons'
+  'react-router', 'jquery', 'moment', 'lodash','flux','react/addons','object-assign', 'keymirror', 'events'
 ];
 
 /**
@@ -129,9 +129,9 @@ gulp.task('main', function(cb) {
 });
 
 gulp.task('build:blog', function() {
-  var files = fs.readdirSync('./app/posts');
+  var files = fs.readdirSync('./app/assets/posts');
   var list = files.map(function(e) {
-    var content = fs.readFileSync('./app/posts/' + e, {encoding: 'utf8'});
+    var content = fs.readFileSync('./app/assets/posts/' + e, {encoding: 'utf8'});
     var markdown = marked(content);
 
     markdown.meta.slug = e.split('.md')[0];
@@ -166,8 +166,8 @@ gulp.task('watch', function() {
   livereload.listen();
 
   watch('./app/index.html', 'move:html');
-  watch('./app/posts/**/*.md', 'refresh-md');
-  watch(['./app/**/*.js', '!./app/posts**/*.js'], 'build:app');
+  watch('./app/assets/posts/**/*.md', 'refresh-md');
+  watch(['./app/**/*.js'], 'build:app');
   watch('./app/app.scss', 'move:css');
   watch('./app/assets/**/*', 'move:assets');
 });

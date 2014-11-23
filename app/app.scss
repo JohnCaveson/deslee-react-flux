@@ -156,24 +156,45 @@ html[data-theme="crisp"] {
   }
 }
 
-.example-enter {
+.route-enter {
   opacity: 0.01;
   transition: opacity .25s ease-in;
 }
 
-.example-enter.example-enter-active {
+.route-enter.route-enter-active {
   opacity: 1;
 }
 
-.example-leave {
+.route-leave {
   opacity: 0.1;
   visibility: hidden;
   transition: opacity 0.1s ease-in;
 }
 
-.example-leave.example-leave-active {
+.route-leave.route-leave-active {
   opacity: 0.01;
 }
+
+.posts-enter {
+  opacity: 0.01;
+  transition: .25s ease-in;
+}
+
+.posts-enter.posts-enter-active {
+  opacity: 1;
+}
+
+.posts-leave {
+  opacity: 0.1;
+  visibility: hidden;
+  transition: opacity 0.1s ease-in;
+}
+
+.posts-leave.posts-leave-active {
+  opacity: 0.01;
+}
+
+
 
 /* cehck out my profile */
 /* http://codepen.io/waddington/ */

@@ -10,17 +10,12 @@ var TransitionGroup = React.addons.CSSTransitionGroup;
 var _ = require('lodash');
 var moment = require('moment');
 
-var Posts = require('./components/post/posts');
-var Post = require('./components/post/post');
+var Posts = require('./components/posts');
+var Post = require('./components/post');
+var NotFound = require('./components/notFound');
 
-_.remove(app_initial_data, function(post) {return post.meta.Draft});
 
-var PostsHandler = React.createClass({
-  render: function() {
-    return <Posts initialData={app_initial_data}/>
-  }
-});
-
+// basically a duplicate of the body, with reactified elements.
 var MainHandler = React.createClass({
   mixins: [ Router.State ],
   render: function() {
@@ -48,7 +43,7 @@ var MainHandler = React.createClass({
       </header>
 
       <main className="main">
-        <TransitionGroup transitionName="example"><RouteHandler key={key} /></TransitionGroup>
+        <TransitionGroup transitionName="route"><RouteHandler key={key} /></TransitionGroup>
       </main>
 
       <footer className="footer">
@@ -62,9 +57,9 @@ var MainHandler = React.createClass({
   }
 });
 
-var NotFound = React.createClass({
+var PostsHandler = React.createClass({
   render: function() {
-    return <h2>Not found</h2>
+    return <Posts />
   }
 });
 
@@ -93,4 +88,10 @@ var routes = <Route handler={MainHandler} location="history">
 
 Router.run(routes, Router.HistoryLocation, function(Handler) {
   React.render(<Handler/>, document.body);
+});
+
+_.remove(app_initial_data, function(post) {return post.meta.Draft});
+var actions = require('./actions/postActions');
+app_initial_data.forEach(function(e) {
+  actions.receivedPost(e);
 });
