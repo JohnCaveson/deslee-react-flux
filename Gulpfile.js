@@ -58,7 +58,7 @@ gulp.task('build:posts', function() {
 gulp.task('build:app', function() {
   var stream = gulp.src('./app/main.js', {read: false})
 		.pipe(browserify({
-			transform: build_options.isDev ? ['reactify'] : ['reactify', 'uglifyify'],
+			transform: ['reactify'],
 			debug: process.env.NODE_ENV != 'production'
 		}))
 		.on('prebundle', function(bundle) {
