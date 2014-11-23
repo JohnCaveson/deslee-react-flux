@@ -49,9 +49,7 @@ var MainHandler = React.createClass({
       <footer className="footer">
         <span>© 2014 Desmond Lee</span>
         <span className="separator"></span>
-        <a href="https://github.com/deslee/deslee-react-flux/">Hand crafted.</a>
-        <span className="separator"></span>
-        <a href="https://github.com/kathyqian/crisp-ghost-theme">Theme.</a>
+        <a href="https://github.com/deslee/deslee-react-flux/">Source.</a>
       </footer>
     </div>
   }

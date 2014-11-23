@@ -58,3 +58,8 @@ Here are some of my favorite people and things on the web:
 - Games
 	- [Kerbal Space Program](https://kerbalspaceprogram.com/)
 	- [Starbound](http://playstarbound.com/) 
+
+
+### Attribution
+- Favicon: [Building Blocks by Oliver Rooker from The Noun Project](http://thenounproject.com/term/building-blocks/84244/)
+- Theme inspired by [Crisp](https://github.com/kathyqian/crisp-ghost-theme) by Kathy Qian
