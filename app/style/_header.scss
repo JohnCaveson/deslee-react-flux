@@ -14,8 +14,8 @@ html[data-theme="crisp"] {
 
     @media #{$small-only}, #{$medium-only} {
       .intro {
-        max-width: $sidebar-size;
-        margin: 0 auto;
+        /*max-width: $sidebar-size;
+        margin: 0 auto;*/
       }
       .menu-item {
         display: inline-block;
