@@ -92,6 +92,6 @@ Router.run(routes, Router.HistoryLocation, function(Handler) {
 
 _.remove(app_initial_data, function(post) {return post.meta.Draft});
 var actions = require('./actions/postActions');
-app_initial_data.forEach(function(e) {
-  actions.receivedPost(e);
-});
+app_initial_data.forEach(function(post) {
+  actions.receivedPost(post)
+})
