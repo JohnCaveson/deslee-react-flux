@@ -39,6 +39,7 @@ html[data-theme="crisp"] {
   }
 
   .main {
+    display: block;
     @media #{$small-up} {
       padding: 1rem 1rem 1rem;
       .posts h2 {
