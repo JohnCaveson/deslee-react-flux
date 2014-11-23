@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var Router = require('react-router');
+var moment = require('moment');
 var Route = Router.Route;
 var Link = Router.Link;
 var RouteHandler = Router.RouteHandler;
@@ -13,6 +14,7 @@ var moment = require('moment');
 var Posts = require('./components/posts');
 var Post = require('./components/post');
 var NotFound = require('./components/notFound');
+
 
 
 // basically a duplicate of the body, with reactified elements.
@@ -47,7 +49,7 @@ var MainHandler = React.createClass({
       </main>
 
       <footer className="footer">
-        <span>© 2014 Desmond Lee</span>
+        <span>© {moment().format('YYYY')} Desmond Lee</span>
         <span className="separator"></span>
         <a href="https://github.com/deslee/deslee-react-flux/">Source.</a>
       </footer>
@@ -78,9 +80,17 @@ var NotFoundHandler = React.createClass({
   }
 });
 
+var TagsHandler = React.createClass({
+  mixins: [Router.State],
+  render: function() {
+    return <Posts tags={this.getParams().tags} />
+  }
+});
+
 var routes = <Route handler={MainHandler} location="history">
   <DefaultRoute handler={PostsHandler} name="index" />
   <Route handler={PostHandler} name="post" path=":slug" />
+  <Route handler={TagsHandler} name="tags" path="tags/:tags" />
   <NotFoundRoute handler={NotFoundHandler}/>
 </Route>;
 
@@ -92,4 +102,4 @@ _.remove(app_initial_data, function(post) {return post.meta.Draft});
 var actions = require('./actions/postActions');
 app_initial_data.forEach(function(post) {
   actions.receivedPost(post)
-})
+});
