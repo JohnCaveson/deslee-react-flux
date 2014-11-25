@@ -1,5 +1,5 @@
 ---
-Title:   Google Calendar Experiment
+Title:   Getting started with Google Calendar API
 Date:    2014-11-24
 Tags:
 - apis
