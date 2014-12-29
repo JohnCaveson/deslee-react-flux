@@ -12,6 +12,8 @@ var fs = require('fs');
 var marked = require('meta-marked');
 var clean = require('gulp-clean');
 var uglify = require('gulp-uglify');
+var vinyl_map = require('vinyl-map');
+var path = require('path');
 
 var build_options = {
 	'isDev': true,
@@ -128,16 +130,28 @@ gulp.task('main', function(cb) {
   runSequence('build', 'move', cb);
 });
 
+/*
+  generates JSON containing data for the blog
+*/
 gulp.task('build:blog', function() {
-  var files = fs.readdirSync('./app/assets/posts');
-  var list = files.map(function(e) {
-    var content = fs.readFileSync('./app/assets/posts/' + e, {encoding: 'utf8'});
-    var markdown = marked(content);
+  var metadata = [];
 
-    markdown.meta.slug = e.split('.md')[0];
-    return markdown;
-  });
-  build_options.json = JSON.stringify(list);
+  gulp.src('./app/assets/posts/*.md').pipe(vinyl_map(function(data, filepath) {
+    var markdown = marked(data.toString());
+    var basename = path.basename(filepath, '.md');
+    markdown.meta.slug = basename;
+
+    metadata.push(markdown.meta);
+    return JSON.stringify(markdown);
+  }))
+    .pipe(rename(function(path) {
+      path.extname = '.json';
+      return path;
+    }))
+    .pipe(gulp.dest('./build/blog/'))
+    .on('end', function() {
+      build_options.metadata = JSON.stringify(metadata);
+    });
 });
 
 gulp.task('serve', function() {
@@ -150,7 +164,7 @@ gulp.task('serve', function() {
 
 gulp.task('refresh-md', function(cb) {
   runSequence('build:blog', 'move:html', cb);
-})
+});
 
 gulp.task('watch', function() {
   var watch = function(path, task) {

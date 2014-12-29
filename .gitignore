@@ -3,3 +3,4 @@ bower_components/
 .idea/
 build/
 deslee.me
+npm-debug.log

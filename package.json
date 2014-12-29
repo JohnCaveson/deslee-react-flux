@@ -22,9 +22,11 @@
     "keymirror": "^0.1.0",
     "meta-marked": "^0.3.3",
     "object-assign": "^2.0.0",
+    "path": "^0.4.9",
     "process": "^0.8.0",
     "reactify": "^0.17.1",
-    "run-sequence": "^1.0.2"
+    "run-sequence": "^1.0.2",
+    "vinyl-map": "^1.0.1"
   },
   "dependencies": {
     "flux": "^2.0.1",

@@ -15,6 +15,8 @@ var Posts = require('./components/posts');
 var Post = require('./components/post');
 var NotFound = require('./components/notFound');
 
+var PostStore = require('./stores/postStore');
+
 
 
 // basically a duplicate of the body, with reactified elements.
@@ -65,9 +67,18 @@ var PostsHandler = React.createClass({
 
 var PostHandler = React.createClass({
   mixins: [Router.State],
+  componentWillMount: function() {
+    PostStore.addChangeListener(this._postStoreUpdated);
+  },
+  componentWillUnmount: function() {
+    PostStore.removeChangeListener(this._postStoreUpdated);
+  },
+  _postStoreUpdated: function() {
+    this.forceUpdate();
+  },
   render: function() {
     var slug = this.getParams().slug;
-    var post = _.find(app_initial_data, {meta:{slug: slug}});
+    var post = _.find(PostStore.getAllPosts(), {meta:{slug: slug}});
     if (post)
       return <Post post={post}/>;
     else return <NotFound />
@@ -98,8 +109,7 @@ Router.run(routes, Router.HistoryLocation, function(Handler) {
   React.render(<Handler/>, document.body);
 });
 
-_.remove(app_initial_data, function(post) {return post.meta.Draft});
 var actions = require('./actions/postActions');
-app_initial_data.forEach(function(post) {
-  actions.receivedPost(post)
+metadata.forEach(function(meta) {
+  actions.receivedMetadata(meta)
 });
