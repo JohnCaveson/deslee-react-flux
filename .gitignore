@@ -1,6 +1,6 @@
 node_modules/
 bower_components/
 .idea/
-build/
 deslee.me
 npm-debug.log
+*.un~
