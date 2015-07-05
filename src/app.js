@@ -59,6 +59,6 @@ Promise.all([
     }
   }).then(() => FastClick.attach(document.body)),
   new Promise((resolve) => {
-    AppActions.navigateTo(path, resolve)
+    AppActions.navigateTo(path, {noModifyState: true}, resolve)
   })
 ]).then(run);

@@ -83,27 +83,6 @@ export default {
           // try markdown file
           tryFile(uri, 'md').then(resolve).catch(reject);
         });
-
-        /*// try jade file
-        let fileName = path.join(CONTENT_DIR, (uri === '/' ? '/index' : uri) + '.jade');
-        fs.readFile(fileName, {encoding: 'utf8'}, (err, data) => {
-          if (!err) {
-            resolve(parseJade(uri, data));
-          } else if (err.code === 'ENOENT') {
-            // try markdown file
-            fileName = path.join(CONTENT_DIR, (uri === '/' ? '/index' : uri) + '.md');
-            fs.readFile(fileName, {encoding: 'utf8'}, (err2, data2) => {
-              if (!err2) {
-                resolve(parseMarkdown(uri, data2));
-              } else {
-                reject(err2);
-              }
-            });
-          }
-          else {
-            reject(err);
-          }
-        });*/
       }
     }).then((page) => {
       Dispatcher.dispatch({

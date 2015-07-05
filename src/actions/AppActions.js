@@ -9,11 +9,15 @@ import DefaultComponents from '../content/DefaultComponents';
 export default {
 
   goToPath(path, options) {
-    if (canUseDOM) {
-      if (options && options.replace) {
-        window.history.replaceState({}, document.title, path);
-      } else {
-        window.history.pushState({}, document.title, path);
+    if (options && options.noModifyState) {
+    } else {
+      let currentPath = decodeURI(window.location.pathname);
+      if (canUseDOM && currentPath != path) {
+        if (options && options.replace) {
+          window.history.replaceState({}, document.title, path);
+        } else {
+          window.history.pushState({}, document.title, path);
+        }
       }
     }
 
@@ -27,6 +31,9 @@ export default {
     // don't load the page if you don't have to
     if (DefaultComponents[path]) {
       this.goToPath(path, options);
+      if (cb) {
+        cb();
+      }
     } else {
       this.loadPage(path, () => {
         this.goToPath(path, options);
@@ -46,8 +53,6 @@ export default {
     http.get('/api/query?path=' + encodeURI(path))
       .accept('application/json')
       .end((err, res) => {
-
-        console.log('receive', res.body)
         Dispatcher.dispatch({
           type: ActionTypes.RECEIVE_PAGE,
           path,

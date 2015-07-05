@@ -20,6 +20,7 @@ var AppStore = Object.assign({}, EventEmitter.prototype, {
         path: path
       };
     });
+    this.emitChange();
   },
 
   isLoading() {
