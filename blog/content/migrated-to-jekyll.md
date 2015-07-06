@@ -1,9 +1,10 @@
 ---
-ditle:   Migrated to Jekyll
-Date:     2014-1-14
+title:   Migrated to Jekyll
+date:     2014-1-14
 component: ContentPage
 tags:
   - outdated
+draft: true
 ---
 
 I migrated my blog to [Jekyll][1] yesterday. It was pretty easy since I didn't have that many posts.

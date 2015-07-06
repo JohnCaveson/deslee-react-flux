@@ -15,6 +15,13 @@ import mkdirp from 'mkdirp';
 import runSequence from 'run-sequence';
 import webpack from 'webpack';
 import minimist from 'minimist';
+import vinyl_map from 'vinyl-map';
+import fm from 'front-matter';
+import debug from 'gulp-debug'
+import concat from 'gulp-concat'
+import through from 'through2';
+import gulp_file from 'gulp-file';
+import fs from 'fs';
 
 const $ = gulpLoadPlugins();
 const argv = minimist(process.argv.slice(2));
@@ -47,7 +54,8 @@ gulp.task('resources', () => {
   src.resources = [
     'package.json',
     'src/content*/**',
-    'src/templates*/**'
+    'src/templates*/**',
+    'blog/content*/**'
   ];
   return gulp.src(src.resources)
     .pipe($.changed('build'))
@@ -92,7 +100,36 @@ gulp.task('bundle', cb => {
 
 // Build the app from source code
 gulp.task('build', ['clean'], cb => {
-  runSequence(['assets', 'resources'], ['bundle'], cb);
+  runSequence(['assets', 'resources', 'index-blog'], ['bundle'], cb);
+});
+
+gulp.task('index-blog', (cb) => {
+  var index = [];
+  src.blog = 'blog/content*/**'
+  gulp.src(src.blog)
+    .pipe(through.obj(function(chunk, enc, callback) {
+      if(chunk.isBuffer()) {
+        let contents = chunk.contents.toString('utf8');
+        let metadata = fm(contents);
+        var data = Object.assign({slug: path.basename(chunk.path).split('.')[0]}, metadata.attributes);
+        if (!metadata.attributes.draft) {
+          this.push(data)
+        }
+      }
+      callback()
+    }))
+    .on('data', function(data) {
+      index.push(data)
+    })
+    .on('end', function() {
+      let json = JSON.stringify(index);
+      let contents = `
+// gulp generated file
+export default JSON.parse('${json}');
+
+`;
+      fs.writeFile('src/content/Blog.js', contents, cb);
+    })
 });
 
 // Build and start watching for modifications
@@ -101,6 +138,7 @@ gulp.task('build:watch', cb => {
   runSequence('build', () => {
     gulp.watch(src.assets, ['assets']);
     gulp.watch(src.resources, ['resources']);
+    gulp.watch(src.blog, ['index-blog']);
     cb();
   });
 });

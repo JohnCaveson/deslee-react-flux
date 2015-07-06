@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import styles from './HomePage.less';
 import withStyles from '../../decorators/withStyles';
 import defaultRoute from '../../decorators/defaultRoute';
+import blog from '../../content/Blog';
+import Link from '../../utils/Link';
 
 @defaultRoute('/')
 @withStyles(styles)
@@ -18,7 +20,9 @@ class HomePage {
       <div className="HomePage">
         <div className="HomePage-container">
           <h1>{title}</h1>
-          <p>...</p>
+          {blog.map((post) => {
+            return <p key={post.slug}><a href={`/${post.slug}`} onClick={Link.handleClick}>{post.title}</a></p>;
+          })}
         </div>
       </div>
     );

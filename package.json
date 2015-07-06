@@ -18,7 +18,8 @@
     "normalize.css": "3.0.3",
     "react": "0.13.3",
     "source-map-support": "0.3.1",
-    "superagent": "1.2.0"
+    "superagent": "1.2.0",
+    "vinyl-map": "^1.0.1"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.2.0",
@@ -35,6 +36,9 @@
     "git-push": "^0.1.1",
     "gulp": "^3.9.0",
     "gulp-changed": "^1.2.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-debug": "^2.0.1",
+    "gulp-file": "^0.2.0",
     "gulp-if": "^1.2.5",
     "gulp-load-plugins": "^0.10.0",
     "gulp-rename": "^1.2.2",
@@ -50,6 +54,7 @@
     "psi": "^1.0.6",
     "run-sequence": "^1.1.0",
     "style-loader": "^0.12.3",
+    "through2": "^2.0.0",
     "url-loader": "^0.5.6",
     "webpack": "^1.9.10"
   },

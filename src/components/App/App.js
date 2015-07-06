@@ -42,7 +42,7 @@ class App {
   render() {
     let component;
     let page = AppStore.getPage(this.props.path);
-    component = page ? React.createElement(typeof(page.component) === 'string' ? pages[page.component] : page.component, page) : null;
+    component = page ? React.createElement(typeof (page.component) === 'string' ? pages[page.component] : page.component, page) : null;
     return component ? (
       <div>
         <Header />
@@ -54,7 +54,6 @@ class App {
   }
 
   handlePopState(event) {
-    console.log("poppin", event)
     AppActions.navigateTo(window.location.pathname, {replace: !!event.state});
   }
 

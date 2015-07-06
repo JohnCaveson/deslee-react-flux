@@ -9,10 +9,9 @@ import DefaultComponents from '../content/DefaultComponents';
 export default {
 
   goToPath(path, options) {
-    if (options && options.noModifyState) {
-    } else {
+    if (!options || !options.noModifyState) {
       let currentPath = decodeURI(window.location.pathname);
-      if (canUseDOM && currentPath != path) {
+      if (canUseDOM && currentPath !== path) {
         if (options && options.replace) {
           window.history.replaceState({}, document.title, path);
         } else {

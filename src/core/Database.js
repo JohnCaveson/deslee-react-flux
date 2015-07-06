@@ -34,7 +34,7 @@ function parseContent(uri, data, type) {
       default:
         reject('invalid type');
     }
-    resolve(Object.assign({path: uri, content: html}, content.attributes))
+    resolve(Object.assign({path: uri, content: html}, content.attributes));
   });
 }
 
@@ -56,9 +56,9 @@ function tryFile(uri, type) {
         reject(err);
       } else {
         parseContent(uri, data, type).then(page => {
-          resolve(page)
+          resolve(page);
         }).catch(error => {
-          reject(error)
+          reject(error);
         });
       }
     });
