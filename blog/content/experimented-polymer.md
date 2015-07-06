@@ -2,7 +2,7 @@
 title:   Experimented with Polymer
 date:    2014-11-17
 component: ContentPage
-Tags:
+tags:
   - polymer
   - dev
 ---

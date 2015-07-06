@@ -5,6 +5,7 @@ import { canUseDOM } from 'react/lib/ExecutionEnvironment';
 import Dispatcher from '../core/Dispatcher';
 import ActionTypes from '../constants/ActionTypes';
 import DefaultComponents from '../content/DefaultComponents';
+import Route from 'route-parser';
 
 export default {
 
@@ -28,7 +29,16 @@ export default {
 
   navigateTo(path, options, cb) {
     // don't load the page if you don't have to
-    if (DefaultComponents[path]) {
+
+    var result = Object.keys(DefaultComponents).map(path => {
+      return {
+        path: path,
+        route: new Route(path)
+      }
+    }).find(obj => {
+      return obj.route.match(path)
+    });
+    if (result) {
       this.goToPath(path, options);
       if (cb) {
         cb();
@@ -49,7 +59,7 @@ export default {
       path
     });
 
-    http.get('/api/query?path=' + encodeURI(path))
+    http.get('/api/query?path=' + encodeURI(path.split('?')[0]))
       .accept('application/json')
       .end((err, res) => {
         Dispatcher.dispatch({

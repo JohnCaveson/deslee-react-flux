@@ -4,6 +4,7 @@ import EventEmitter from 'eventemitter3';
 import Dispatcher from '../core/Dispatcher';
 import ActionTypes from '../constants/ActionTypes';
 import DefaultComponents from '../content/DefaultComponents';
+import Route from 'route-parser';
 
 const CHANGE_EVENT = 'change';
 
@@ -17,7 +18,7 @@ var AppStore = Object.assign({}, EventEmitter.prototype, {
     Object.keys(DefaultComponents).forEach(path => {
       pages[path] = {
         component: DefaultComponents[path],
-        path: path
+        originalPath: path
       };
     });
     this.emitChange();
@@ -34,7 +35,19 @@ var AppStore = Object.assign({}, EventEmitter.prototype, {
    * @returns {*} Page data.
    */
   getPage(path) {
-    return path in pages ? pages[path] : null;
+    var result = Object.keys(pages).map(page => {
+      return {
+        path: page,
+        route: new Route(page)
+      }
+    }).find(obj => {
+      return obj.route.match(path)
+    });
+    if (result) {
+      return pages[result.path];
+    } else {
+      return null;
+    }
   },
 
   /**

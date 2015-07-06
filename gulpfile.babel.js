@@ -22,6 +22,8 @@ import concat from 'gulp-concat'
 import through from 'through2';
 import gulp_file from 'gulp-file';
 import fs from 'fs';
+import less from 'gulp-less';
+import sass from 'gulp-sass';
 
 const $ = gulpLoadPlugins();
 const argv = minimist(process.argv.slice(2));
@@ -40,9 +42,20 @@ gulp.task('clean', cb => {
   });
 });
 
+gulp.task('scss', () => {
+  src.scss = ['./src/layout.scss', './src/fonts.scss'];
+  return gulp.src(src.scss)
+    .pipe(sass())
+    .pipe(gulp.dest('./build/public'));
+});
+
 // Static files
 gulp.task('assets', () => {
-  src.assets = 'src/public/**';
+  src.assets = [
+    'src/public/**',
+    'bower_components/basscss*/**',
+    'bower_components/components-font-awesome*/**'
+  ];
   return gulp.src(src.assets)
     .pipe($.changed('build/public'))
     .pipe(gulp.dest('build/public'))
@@ -100,12 +113,12 @@ gulp.task('bundle', cb => {
 
 // Build the app from source code
 gulp.task('build', ['clean'], cb => {
-  runSequence(['assets', 'resources', 'index-blog'], ['bundle'], cb);
+  runSequence(['assets', 'resources', 'index-blog', 'scss'], ['bundle'], cb);
 });
 
 gulp.task('index-blog', (cb) => {
   var index = [];
-  src.blog = 'blog/content*/**'
+  src.blog = 'blog/content*/**';
   gulp.src(src.blog)
     .pipe(through.obj(function(chunk, enc, callback) {
       if(chunk.isBuffer()) {
@@ -139,6 +152,7 @@ gulp.task('build:watch', cb => {
     gulp.watch(src.assets, ['assets']);
     gulp.watch(src.resources, ['resources']);
     gulp.watch(src.blog, ['index-blog']);
+    gulp.watch(src.scss, ['scss']);
     cb();
   });
 });

@@ -3,7 +3,8 @@ import styles from './HomePage.less';
 import withStyles from '../../decorators/withStyles';
 import defaultRoute from '../../decorators/defaultRoute';
 import blog from '../../content/Blog';
-import Link from '../../utils/Link';
+import PostsPage from '../PostsPage';
+
 
 @defaultRoute('/')
 @withStyles(styles)
@@ -16,16 +17,9 @@ class HomePage {
   render() {
     let title = 'Home';
     this.context.onSetTitle(title);
-    return (
-      <div className="HomePage">
-        <div className="HomePage-container">
-          <h1>{title}</h1>
-          {blog.map((post) => {
-            return <p key={post.slug}><a href={`/${post.slug}`} onClick={Link.handleClick}>{post.title}</a></p>;
-          })}
-        </div>
-      </div>
-    );
+    return (<section className="posts">
+      <PostsPage posts={blog} />
+    </section>);
   }
 
 }

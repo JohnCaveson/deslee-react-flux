@@ -3,6 +3,8 @@
 import React, { PropTypes } from 'react';
 import styles from './ContentPage.less';
 import withStyles from '../../decorators/withStyles';
+import moment from 'moment';
+import Tags from '../Tags';
 
 @withStyles(styles)
 class ContentPage {
@@ -10,7 +12,8 @@ class ContentPage {
   static propTypes = {
     path: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    title: PropTypes.string
+    title: PropTypes.string,
+    date: PropTypes.any
   };
 
   static contextTypes = {
@@ -19,15 +22,17 @@ class ContentPage {
 
   render() {
     this.context.onSetTitle(this.props.title);
+    var m = moment(new Date(this.props.date));
+    var time = this.props.date ? <time dateTime={m.format('YYYY-MM-DD')}>{m.format('MMMM Do YYYY')}</time> : undefined;
+    var body = <div dangerouslySetInnerHTML={{__html: this.props.content}} />;
+
     return (
-      <div className="ContentPage">
-        <div className="ContentPage-container">
-          {
-            this.props.path === '/' ? null : <h1>{this.props.title}</h1>
-          }
-          <div dangerouslySetInnerHTML={{__html: this.props.content || ''}} />
-        </div>
-      </div>
+      <article className="post">
+        {time}
+        <Tags post={this.props} />
+        <h1>{this.props.title}</h1>
+        {body}
+      </article>
     );
   }
 
