@@ -9,8 +9,6 @@ import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import ContentPage from '../ContentPage';
 import ContactPage from '../ContactPage';
-import LoginPage from '../LoginPage';
-import RegisterPage from '../RegisterPage';
 import HomePage from '../HomePage';
 import NotFoundPage from '../NotFoundPage';
 import TagsPage from '../TagsPage';
@@ -18,7 +16,7 @@ import Link from '../../utils/Link';
 
 var TransitionGroup = addons.CSSTransitionGroup;
 
-const pages = { ContentPage, ContactPage, LoginPage, RegisterPage, NotFoundPage, HomePage };
+const pages = { ContentPage, ContactPage, NotFoundPage, HomePage };
 AppStore.init();
 
 @withContext
@@ -65,7 +63,7 @@ class App {
           <nav className="menu">
             <h6 className="menu-item"><a href="/" onClick={Link.handleClick}>Home</a></h6>
             <h6 className="menu-item"><a href="/about" onClick={Link.handleClick}>About</a></h6>
-            <h6 className="menu-item"><a href="/privacy" onClick={Link.handleClick}>Projects</a></h6>
+            <h6 className="menu-item"><a href="/projects" onClick={Link.handleClick}>Projects</a></h6>
           </nav>
         </header>
         <main className="main">
